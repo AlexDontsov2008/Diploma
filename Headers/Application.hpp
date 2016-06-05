@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "Singleton.hpp"
+#include "Window.hpp"
 
 class Application : public Singleton<Application>
 {
@@ -10,15 +11,21 @@ class Application : public Singleton<Application>
         friend Singleton<Application>;
         void Run();
 
+        Window* GetWindow();
+
     protected:
         Application();
-        virtual ~Application();
+        virtual ~Application() {};
 
     private:
         void Init();
 
+        void Update(sf::Time dt);
+        void Render();
+        void HandleInput();
+
     private:
-        sf::RenderWindow    window_;
+        Window  m_window;
 };
 
 #endif // _APPLICATION_HPP_

@@ -1,24 +1,39 @@
-#include "Application.hpp"
-
 #include <exception>
+
+#include "Application.hpp"
+#include "pugixml.hpp"
 
 namespace
 {
-    constexpr size_t windowWidth  = 1024;
-    constexpr size_t windowHeight = 768;
+    constexpr float windowScale = 0.7f;
+    const auto descktopMode = sf::VideoMode::getDesktopMode();
+    const size_t windowWidth  = descktopMode.width * windowScale;
+    const size_t windowHeight = descktopMode.height * windowScale;
     constexpr char windowName[] = "Trajectory Visualisation";
 }
 
 Application::Application()
-: window_ {sf::VideoMode(windowWidth, windowHeight), windowName}
+: m_window(windowName, sf::Vector2u(windowWidth, windowHeight))
 {
     Init();
 }
 
-Application::~Application()
+void Application::Update(sf::Time dt)
+{
+    m_window.Update(dt);
+}
+
+void Application::Render()
+{
+    m_window.BeginDraw();
+    m_window.EndDraw();
+}
+
+void Application::HandleInput()
 {
 
 }
+
 
 void Application::Init()
 {
@@ -27,22 +42,33 @@ void Application::Init()
 
 void Application::Run()
 {
-    sf::RectangleShape rectange(sf::Vector2f(200.f, 200.f));
-    rectange.setFillColor(sf::Color::Blue);
-    rectange.setPosition(sf::Vector2f(windowWidth / 2.f, windowHeight / 2.f));
+    const sf::Time frameTime = sf::seconds(1.f / 60.f);
 
-    while (window_.isOpen())
+    sf::Clock clock;
+    sf::Time elapsed = sf::Time::Zero;
+
+    while (!m_window.IsDone())
     {
-        sf::Event event;
-        while (window_.pollEvent(event))
+        elapsed += clock.restart();
+
+        if (elapsed >= frameTime)
         {
-            if (event.type == sf::Event::Closed)
-                window_.close();
+            elapsed -= frameTime;
+
+            HandleInput();
+            Update(frameTime);
         }
-
-        window_.clear(sf::Color::Black);
-
-        window_.draw(rectange);
-        window_.display();
+        Render();
     }
 }
+
+
+
+
+
+
+
+
+
+
+

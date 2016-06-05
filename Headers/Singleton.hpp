@@ -12,9 +12,9 @@ class Singleton : private Uncopyable
     public:
         static T& Instance()
         {
-            if (!pInstance_)
+            if (!m_pInstance)
             {
-                if (destroyed_)
+                if (m_destroyed)
                 {
                     OnDeadReference();
                 }
@@ -23,7 +23,7 @@ class Singleton : private Uncopyable
                     Create();
                 }
             }
-            return *pInstance_;
+            return *m_pInstance;
         }
 
     protected:
@@ -31,15 +31,15 @@ class Singleton : private Uncopyable
 
         virtual ~Singleton()
         {
-            pInstance_ = nullptr;
-            destroyed_ = true;
+            m_pInstance = nullptr;
+            m_destroyed = true;
         }
 
     private:
         static void Create()
         {
             static T theInstance;
-            pInstance_ = &theInstance;
+            m_pInstance = &theInstance;
         }
 
         static void OnDeadReference()
@@ -48,14 +48,14 @@ class Singleton : private Uncopyable
         }
 
     private:
-        static T* pInstance_;
-        static bool destroyed_;
+        static T* m_pInstance;
+        static bool m_destroyed;
 };
 
 template <typename T>
-T* Singleton<T>::pInstance_ = nullptr;
+T* Singleton<T>::m_pInstance = nullptr;
 
 template <typename T>
-bool Singleton<T>::destroyed_ = false;
+bool Singleton<T>::m_destroyed = false;
 
 #endif // _SINGLETON_HPP_
