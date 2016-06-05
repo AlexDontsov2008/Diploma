@@ -1,19 +1,12 @@
 #include <exception>
 
 #include "Application.hpp"
-#include "pugixml.hpp"
 
-namespace
-{
-    constexpr float windowScale = 0.7f;
-    const auto descktopMode = sf::VideoMode::getDesktopMode();
-    const size_t windowWidth  = descktopMode.width * windowScale;
-    const size_t windowHeight = descktopMode.height * windowScale;
-    constexpr char windowName[] = "Trajectory Visualisation";
-}
 
 Application::Application()
-: m_window(windowName, sf::Vector2u(windowWidth, windowHeight))
+: m_fontStorage("Resources/Sansation.ttf")
+, m_window("Trajectory Visualisation", sf::Vector2u(1024, 768))
+, m_map(sf::Vector2u(20, 20), 30.f, m_fontStorage.getFont())
 {
     Init();
 }
@@ -26,6 +19,7 @@ void Application::Update(sf::Time dt)
 void Application::Render()
 {
     m_window.BeginDraw();
+    m_window.Draw(m_map);
     m_window.EndDraw();
 }
 

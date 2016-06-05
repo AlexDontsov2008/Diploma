@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
 <application name="Trajectory Visualisation">
-    <window width="640" height="480">
+    <window width="640" height="480" scale="0.7">
 </application>

@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include "Singleton.hpp"
 #include "Window.hpp"
+#include "DiscreteMap.hpp"
+#include "FontStorage.hpp"
 
 class Application : public Singleton<Application>
 {
@@ -25,7 +27,9 @@ class Application : public Singleton<Application>
         void HandleInput();
 
     private:
+        FontStorage m_fontStorage;
         Window  m_window;
+        DiscreteMap m_map;
 };
 
 #endif // _APPLICATION_HPP_
