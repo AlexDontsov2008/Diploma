@@ -1,0 +1,10 @@
+# игнорировать все файлы в Resources/
+Resources/
+# игнорировать все файлы в bin/
+bin/
+# игнорировать все файлы в obj/
+obj/
+# игнорировать все файлы .cbp, .depend, .layout
+*.cbp
+*.depend
+*.layout
