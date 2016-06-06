@@ -19,6 +19,8 @@ class DiscreteMap : public DrawableObject
         virtual void Update(sf::Time dt) override;
         virtual ObjectType GetObjectType() const override;
 
+        void SetCellWithPositionAndState(const sf::Vector2u& l_position, Cell::CellState l_state);
+
     protected:
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
