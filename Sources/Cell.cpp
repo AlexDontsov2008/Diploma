@@ -27,6 +27,11 @@ void Cell::SetState(Cell::CellState l_state)
     m_pImpl->SetState(l_state);
 }
 
+Cell::CellState Cell::GetState() const
+{
+    return m_pImpl->GetState();
+}
+
 void Cell::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     m_pImpl->draw(target, states);

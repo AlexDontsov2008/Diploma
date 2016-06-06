@@ -36,7 +36,6 @@ void DiscreteMap::Init(float l_cellSideSize, const sf::Font& l_font)
     }
 }
 
-
 void DiscreteMap::Update(sf::Time dt)
 {
 
@@ -45,6 +44,33 @@ void DiscreteMap::Update(sf::Time dt)
 Object::ObjectType DiscreteMap::GetObjectType() const
 {
     return Object::STATIC_OBJ;
+}
+
+void DiscreteMap::SetCellWithPositionAndState(const sf::Vector2u& l_position, Cell::CellState l_state)
+{
+    // Check for boundaries
+    if (l_position.x < 0 || l_position.x > m_mapWidth ||
+        l_position.y < 0 || l_position.y > m_mapHeight)
+    {
+        throw std::logic_error("Cell position is beyond the borders of the map");
+    }
+
+    // Check for state
+    if (l_state < 0 || l_state >= Cell::CellState::COUNT)
+    {
+        throw std::logic_error("Cell state is undefined");
+    }
+
+    // Check for state matches
+    // swap x & y for right acces
+    auto cell = m_cells[l_position.y][l_position.x];
+    if ( (l_state == Cell::DESTINATION && cell->GetState() == Cell::SOURCE) ||
+         (l_state == Cell::SOURCE && cell->GetState() == Cell::DESTINATION) )
+    {
+        throw std::logic_error("Cell state match the SOURCE and  the DESTINATION");
+    }
+
+    cell->SetState(l_state);
 }
 
 

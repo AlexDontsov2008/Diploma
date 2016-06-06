@@ -31,7 +31,14 @@ void Application::HandleInput()
 
 void Application::Init()
 {
+    // Filling source data
+    m_sourceData.sourcePosition = sf::Vector2u(5, 2);
+    m_sourceData.destinationPosition = sf::Vector2u(18, 17);
 
+
+
+    m_map.SetCellWithPositionAndState(m_sourceData.sourcePosition, Cell::SOURCE);
+    m_map.SetCellWithPositionAndState(m_sourceData.destinationPosition, Cell::DESTINATION);
 }
 
 void Application::Run()

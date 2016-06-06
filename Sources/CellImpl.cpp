@@ -25,6 +25,9 @@ static sf::Color GetColorByCellState(Cell::CellState state)
         case Cell::DESTINATION:
             return sf::Color::Cyan;
 
+        case Cell::SOURCE:
+            return sf::Color(147, 19, 207);
+
         default:
             return sf::Color::Black;
     }
@@ -42,6 +45,9 @@ static sf::String GetMarkByCellState(Cell::CellState state)
 
         case Cell::DESTINATION:
             return sf::String("D");
+
+        case Cell::SOURCE:
+            return sf::String("S");
 
         default:
             return sf::String(" ");
@@ -63,14 +69,16 @@ CellImpl::~CellImpl()
 
 void CellImpl::Init(const sf::Vector2f& l_windowPosition, float l_sideSize, const sf::Font& l_font)
 {
+    constexpr float outlineThickness { 3.f };
     m_rect.setSize(sf::Vector2f(l_sideSize, l_sideSize));
     m_rect.setPosition(l_windowPosition);
     m_rect.setFillColor(GetColorByCellState(m_state));
-    m_rect.setOutlineThickness(3.f);
+    m_rect.setOutlineThickness(outlineThickness);
     m_rect.setOutlineColor(sf::Color::Black);
 
     auto cellPosition = m_rect.getPosition();
-    m_mark.setPosition(cellPosition.x + l_sideSize / 2.f, cellPosition.y + l_sideSize / 2.f);
+
+    m_mark.setPosition(cellPosition.x + outlineThickness, cellPosition.y - outlineThickness * 1.5f);
     m_mark.setColor(sf::Color::White);
 
 }
@@ -90,6 +98,11 @@ void CellImpl::SetState(Cell::CellState l_state)
     m_state = l_state;
     m_rect.setFillColor(GetColorByCellState(m_state));
     m_mark.setString(GetMarkByCellState(m_state));
+}
+
+Cell::CellState CellImpl::GetState() const
+{
+    return m_state;
 }
 
 void CellImpl::draw(sf::RenderTarget& target, sf::RenderStates states) const

@@ -15,7 +15,9 @@ class CellImpl : public DrawableObject
 
         virtual void Update(sf::Time dt) override;
         virtual ObjectType GetObjectType() const override;
+
         void SetState(Cell::CellState l_state);
+        Cell::CellState GetState() const;
 
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

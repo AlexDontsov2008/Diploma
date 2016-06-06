@@ -10,10 +10,17 @@
 class Application : public Singleton<Application>
 {
     public:
+        struct SourceData
+        {
+            sf::Vector2u sourcePosition;
+            sf::Vector2u destinationPosition;
+        };
+
+    public:
         friend Singleton<Application>;
         void Run();
 
-        Window* GetWindow();
+        const SourceData& GetSourceData() const;
 
     protected:
         Application();
@@ -30,6 +37,12 @@ class Application : public Singleton<Application>
         FontStorage m_fontStorage;
         Window  m_window;
         DiscreteMap m_map;
+        SourceData m_sourceData;
 };
+
+inline const Application::SourceData& Application::GetSourceData() const
+{
+    return m_sourceData;
+}
 
 #endif // _APPLICATION_HPP_

@@ -23,6 +23,8 @@ class Cell : public DrawableObject
             OCCUPY_BY_ENEMY,
             TRAJECTORY_STEP,
             DESTINATION,
+            SOURCE,
+            COUNT,
         };
     public:
         Cell(const sf::Vector2f& l_windowPosition, float l_sideSize, const sf::Vector2u& l_mapCoord, const sf::Font& l_font);
@@ -30,6 +32,8 @@ class Cell : public DrawableObject
 
         virtual void Update(sf::Time dt) override;
         virtual ObjectType GetObjectType() const override;
+
+        CellState GetState() const;
         void SetState(CellState l_state);
 
     protected:
