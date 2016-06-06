@@ -1,10 +1,16 @@
 #ifndef _CELL_HPP_
 #define _CELL_HPP_
 
-#include <SFML/Graphics/Text.hpp>
-#include <SFML/Graphics/RectangleShape.hpp>
+#include <memory>
 
 #include "DrawableObject.hpp"
+
+namespace sf
+{
+    class Font;
+}
+
+class CellImpl;
 
 class Cell : public DrawableObject
 {
@@ -18,7 +24,6 @@ class Cell : public DrawableObject
             TRAJECTORY_STEP,
             DESTINATION,
         };
-
     public:
         Cell(const sf::Vector2f& l_windowPosition, float l_sideSize, const sf::Vector2u& l_mapCoord, const sf::Font& l_font);
         virtual ~Cell();
@@ -31,13 +36,7 @@ class Cell : public DrawableObject
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     private:
-        void Init(const sf::Vector2f& l_windowPosition, float l_sideSize, const sf::Font& l_font);
-
-    private:
-        sf::RectangleShape m_rect;
-        sf::Text m_mark;
-        sf::Vector2u m_mapCoord;
-        CellState m_state;
+        std::shared_ptr<CellImpl> m_pImpl;
 };
 
 #endif // _CELL_HPP_
