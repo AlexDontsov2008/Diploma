@@ -29,8 +29,7 @@ void DiscreteMap::Init(float l_cellSideSize, const sf::Font& l_font)
             l_cellPosition.y += l_cellSideSize * i;
 
             auto l_cellMapCoord = sf::Vector2u(j, i);
-            std::shared_ptr<Cell> l_cellPtr{ new Cell(l_cellPosition, l_cellSideSize, l_cellMapCoord, l_font) };
-            l_rowMatrix.push_back(l_cellPtr);
+            l_rowMatrix.push_back(std::make_shared<Cell>(l_cellPosition, l_cellSideSize, l_cellMapCoord, l_font));
         }
 
         m_cells.push_back(l_rowMatrix);

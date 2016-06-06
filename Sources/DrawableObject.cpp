@@ -2,14 +2,10 @@
 
 
 DrawableObject::DrawableObject()
-{
-
-}
+{}
 
 DrawableObject::~DrawableObject()
-{
-
-}
+{}
 
 Object::ObjectType DrawableObject::GetObjectType() const
 {

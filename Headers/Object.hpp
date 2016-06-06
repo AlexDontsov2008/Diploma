@@ -21,7 +21,7 @@ class Object : private Uncopyable
 
     public:
         Object();
-        virtual ~Object();
+        virtual ~Object() = 0;
 
         virtual void Update(sf::Time dt) = 0;
         virtual ObjectType GetObjectType() const = 0;
