@@ -1,8 +1,5 @@
 #include "ApplicationData.hpp"
 
-
-
-
 ApplicationData::ApplicationData(const std::string& l_pathToTheFile)
 {
     pugi::xml_document doc;

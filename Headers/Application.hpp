@@ -11,13 +11,6 @@
 class Application : public Singleton<Application>
 {
     public:
-        struct SourceData
-        {
-            sf::Vector2u sourcePosition;
-            sf::Vector2u destinationPosition;
-        };
-
-    public:
         friend Singleton<Application>;
         void Run();
 
