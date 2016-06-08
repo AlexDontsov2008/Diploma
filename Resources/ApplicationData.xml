@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<Application windowWidth="1024" windowHeight="768" windowName="Trajectory Visualisation">
+    <Map mapWidthInCells="20" mapHeighInCells="20" cellSizeInPixel="30"/>
+    <Locations>
+        <Source xPos="10" yPos="2"/>
+        <Destination xPos="18" yPos="17"/>
+        <Enemies>
+            <Enemy xPos="" yPos="" attackRange=""/>
+        </Enemies>
+    </Locations>
+</Application>

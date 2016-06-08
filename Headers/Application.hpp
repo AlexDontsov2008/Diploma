@@ -6,6 +6,7 @@
 #include "Window.hpp"
 #include "DiscreteMap.hpp"
 #include "FontStorage.hpp"
+#include "ApplicationData.hpp"
 
 class Application : public Singleton<Application>
 {
@@ -20,7 +21,7 @@ class Application : public Singleton<Application>
         friend Singleton<Application>;
         void Run();
 
-        const SourceData& GetSourceData() const;
+        const ApplicationData& GetApplicationData() const;
 
     protected:
         Application();
@@ -34,15 +35,15 @@ class Application : public Singleton<Application>
         void HandleInput();
 
     private:
+        ApplicationData m_data;
         FontStorage m_fontStorage;
         Window  m_window;
         DiscreteMap m_map;
-        SourceData m_sourceData;
 };
 
-inline const Application::SourceData& Application::GetSourceData() const
+inline const ApplicationData& Application::GetApplicationData() const
 {
-    return m_sourceData;
+    return m_data;
 }
 
 #endif // _APPLICATION_HPP_
