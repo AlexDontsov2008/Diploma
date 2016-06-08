@@ -2,6 +2,7 @@
 
 #include "Application.hpp"
 
+static constexpr PathToTheFile[] = "Resources/ApplicationData.xml"
 
 Application::Application()
 : m_fontStorage("Resources/Sansation.ttf")
