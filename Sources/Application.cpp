@@ -2,11 +2,17 @@
 
 #include "Application.hpp"
 
+static constexpr char PathToTheAppData[] = "Resources/ApplicationData.xml";
+static constexpr char PathToTheFont[] = "Resources/Sansation.ttf";
 
 Application::Application()
-: m_fontStorage("Resources/Sansation.ttf")
-, m_window("Trajectory Visualisation", sf::Vector2u(1024, 768))
-, m_map(sf::Vector2u(20, 20), 30.f, m_fontStorage.getFont())
+: m_data(PathToTheAppData)
+, m_fontStorage(PathToTheFont)
+, m_window(m_data.GetApplicationSettins().m_windowName,
+           sf::Vector2u(m_data.GetApplicationSettins().m_widnowWidth, m_data.GetApplicationSettins().m_windowHeight))
+, m_map(sf::Vector2u(m_data.GetMapSettings().m_mapWidth, m_data.GetMapSettings().m_mapHeigh),
+        m_data.GetMapSettings().m_cellSize,
+        m_fontStorage.getFont())
 {
     Init();
 }
@@ -31,14 +37,8 @@ void Application::HandleInput()
 
 void Application::Init()
 {
-    // Filling source data
-    m_sourceData.sourcePosition = sf::Vector2u(5, 2);
-    m_sourceData.destinationPosition = sf::Vector2u(18, 17);
-
-
-
-    m_map.SetCellWithPositionAndState(m_sourceData.sourcePosition, Cell::SOURCE);
-    m_map.SetCellWithPositionAndState(m_sourceData.destinationPosition, Cell::DESTINATION);
+    m_map.SetCellWithPositionAndState(m_data.GetLocations().m_source, Cell::SOURCE);
+    m_map.SetCellWithPositionAndState(m_data.GetLocations().m_destination, Cell::DESTINATION);
 }
 
 void Application::Run()

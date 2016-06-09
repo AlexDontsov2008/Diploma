@@ -55,14 +55,14 @@ void DiscreteMap::SetCellWithPositionAndState(const sf::Vector2u& l_position, Ce
         throw std::logic_error("Cell position is beyond the borders of the map");
     }
 
-    // Check for state
+    // Check for a state
     if (l_state < 0 || l_state >= Cell::CellState::COUNT)
     {
         throw std::logic_error("Cell state is undefined");
     }
 
-    // Check for state matches
-    // swap x & y for right acces
+    // Check for the states matches
+    // swap x & y for the right access
     auto cell = m_cells[l_position.y][l_position.x];
     if ( (l_state == Cell::DESTINATION && cell->GetState() == Cell::SOURCE) ||
          (l_state == Cell::SOURCE && cell->GetState() == Cell::DESTINATION) )
