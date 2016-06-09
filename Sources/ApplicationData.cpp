@@ -15,9 +15,8 @@ ApplicationData::ApplicationData(const std::string& l_pathToTheFile)
 
 void ApplicationData::ParseParameters(const pugi::xml_document& doc)
 {
-    auto applicationNode = doc.child("Application");
-
     // Parse application settings
+    auto applicationNode = doc.child("Application");
     size_t windowWidth = applicationNode.attribute("windowWidth").as_uint();
     size_t windowHeight = applicationNode.attribute("windowHeight").as_uint();
     const std::string windowName = applicationNode.attribute("windowName").as_string();

@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "pugixml.hpp"
+#include "Uncopyable.hpp"
 
 struct ApplicationSettings
 {
@@ -67,22 +68,22 @@ struct Locations
 };
 
 
-class ApplicationData
+class ApplicationData : private Uncopyable
 {
     public:
         ApplicationData(const std::string& l_pathToTheFile);
 
-        ApplicationSettings GetApplicationSettins() const
+        const ApplicationSettings& GetApplicationSettins() const
         {
             return m_applicationSett;
         }
 
-        MapSettings GetMapSettings() const
+        const MapSettings& GetMapSettings() const
         {
             return m_mapSett;
         }
 
-        Locations GetLocations() const
+        const Locations& GetLocations() const
         {
             return m_locations;
         }
