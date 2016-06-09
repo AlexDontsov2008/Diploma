@@ -1,6 +1,7 @@
 #include <exception>
 
 #include "Application.hpp"
+#include "Robot.hpp"
 
 static constexpr char PathToTheAppData[] = "Resources/ApplicationData.xml";
 static constexpr char PathToTheFont[] = "Resources/Sansation.ttf";
@@ -13,6 +14,7 @@ Application::Application()
 , m_map(sf::Vector2u(m_data.GetMapSettings().m_mapWidth, m_data.GetMapSettings().m_mapHeigh),
         m_data.GetMapSettings().m_cellSize,
         m_fontStorage.getFont())
+, m_robotRef(Robot::Instance())
 {
     Init();
 }
@@ -20,6 +22,8 @@ Application::Application()
 void Application::Update(sf::Time dt)
 {
     m_window.Update(dt);
+    m_map.Update(dt);
+    m_robotRef.Update(dt);
 }
 
 void Application::Render()
@@ -39,6 +43,7 @@ void Application::Init()
 {
     m_map.SetCellWithPositionAndState(m_data.GetLocations().m_source, Cell::SOURCE);
     m_map.SetCellWithPositionAndState(m_data.GetLocations().m_destination, Cell::DESTINATION);
+    m_map.SetCellWithPositionAndState(m_data.GetLocations().m_source, Cell::OCCUPY_BY_ROBOT);
 }
 
 void Application::Run()
@@ -58,6 +63,8 @@ void Application::Run()
 
             HandleInput();
             Update(frameTime);
+            // Вынести время sleep в xml
+            sf::sleep(sf::seconds(1.0f));
         }
         Render();
     }

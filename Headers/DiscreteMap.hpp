@@ -7,6 +7,8 @@
 #include "DrawableObject.hpp"
 #include "Cell.hpp"
 
+class Robot;
+
 typedef std::vector<std::vector<std::shared_ptr<Cell>>> CellMatrix;
 
 
@@ -27,10 +29,13 @@ class DiscreteMap : public DrawableObject
     private:
         void Init(float l_cellSideSize, const sf::Font& l_font);
 
+        void UpdateRobotLocationOnMap();
+
     private:
         CellMatrix m_cells;
         size_t m_mapWidth;
         size_t m_mapHeight;
+        const Robot& m_robotRef;
 };
 
 #endif // _DISCRETEMAP_HPP_

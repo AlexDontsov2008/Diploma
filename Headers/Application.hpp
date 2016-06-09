@@ -8,6 +8,8 @@
 #include "FontStorage.hpp"
 #include "ApplicationData.hpp"
 
+class Robot;
+
 class Application : public Singleton<Application>
 {
     public:
@@ -32,6 +34,7 @@ class Application : public Singleton<Application>
         FontStorage m_fontStorage;
         Window  m_window;
         DiscreteMap m_map;
+        Robot& m_robotRef;
 };
 
 inline const ApplicationData& Application::GetApplicationData() const

@@ -5,7 +5,7 @@
         <Source xPos="10" yPos="2"/>
         <Destination xPos="18" yPos="17"/>
         <Enemies>
-            <Enemy xPos="" yPos="" attackRange=""/>
+            <Enemy xPos="10" yPos="10" attackRange="2"/>
         </Enemies>
     </Locations>
 </Application>

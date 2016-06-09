@@ -28,7 +28,8 @@ class CellImpl : public DrawableObject
         sf::RectangleShape m_rect;
         sf::Text m_mark;
         sf::Vector2u m_mapCoord;
-        Cell::CellState m_state;
+        Cell::CellState m_currState;
+        Cell::CellState m_prevState;
 };
 
 #endif // CELLIMPL_HPP_

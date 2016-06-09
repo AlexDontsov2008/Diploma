@@ -3,10 +3,12 @@
 #include <SFML/Graphics/RenderStates.hpp>
 
 #include "DiscreteMap.hpp"
+#include "Robot.hpp"
 
 DiscreteMap::DiscreteMap(const sf::Vector2u& l_mapSize, float l_cellSideSize, const sf::Font& l_font)
 : m_mapWidth(l_mapSize.x)
 , m_mapHeight(l_mapSize.y)
+, m_robotRef(Robot::Instance())
 {
     Init(l_cellSideSize, l_font);
 }
@@ -38,7 +40,12 @@ void DiscreteMap::Init(float l_cellSideSize, const sf::Font& l_font)
 
 void DiscreteMap::Update(sf::Time dt)
 {
+    UpdateRobotLocationOnMap();
+}
 
+void DiscreteMap::UpdateRobotLocationOnMap()
+{
+    m_robotRef.UpdateLocationOnMap(this);
 }
 
 Object::ObjectType DiscreteMap::GetObjectType() const
