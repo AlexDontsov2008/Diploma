@@ -67,6 +67,24 @@ struct Locations
     std::vector<sf::Vector2u> m_enemiesPositions;
 };
 
+struct EnemyParams
+{
+    EnemyParams()
+    {
+        SetEnemyParams();
+    }
+
+    void SetEnemyParams(const std::vector<sf::Vector2u>& l_translation = std::vector<sf::Vector2u>{sf::Vector2u(0, 0)},
+                        size_t l_radiusAttack = 0)
+    {
+        translation = l_translation;
+        radiusAttack = l_radiusAttack;
+    }
+
+    std::vector<sf::Vector2u> translation;
+    size_t radiusAttack;
+};
+
 
 class ApplicationData : private Uncopyable
 {
@@ -88,6 +106,11 @@ class ApplicationData : private Uncopyable
             return m_locations;
         }
 
+        const std::vector<EnemyParams>& GetEnemiesParams() const
+        {
+            return m_enemiesParams;
+        }
+
     private:
         void ParseParameters(const pugi::xml_document& doc);
 
@@ -95,6 +118,7 @@ class ApplicationData : private Uncopyable
         ApplicationSettings m_applicationSett;
         MapSettings m_mapSett;
         Locations m_locations;
+        std::vector<EnemyParams> m_enemiesParams;
 };
 
 #endif // _APPLICATION_DATA_HPP_

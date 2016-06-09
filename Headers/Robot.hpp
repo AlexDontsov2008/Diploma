@@ -10,9 +10,10 @@ class Robot : public Singleton<Robot>, public MoveableObject
 {
     public:
         friend class Singleton<Robot>;
-        virtual void Update(sf::Time dt) override;
 
-        void UpdateLocationOnMap(DiscreteMap* l_map) const;
+        virtual void Update(sf::Time dt) override;
+        virtual ObjectType GetObjectType() const override;
+        virtual void UpdateLocationOnMap(DiscreteMap* l_map) const override;
 
     protected:
         Robot();
@@ -22,7 +23,6 @@ class Robot : public Singleton<Robot>, public MoveableObject
         void TrajectoryStepIteration();
 
     private:
-        virtual ObjectType GetObjectType() const override;
         std::vector<sf::Vector2u> m_trajectory;
         size_t m_trajectoryStep;
 };

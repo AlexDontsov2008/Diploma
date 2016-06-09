@@ -15,6 +15,7 @@ Application::Application()
         m_data.GetMapSettings().m_cellSize,
         m_fontStorage.getFont())
 , m_robotRef(Robot::Instance())
+, m_enemies()
 {
     Init();
 }
@@ -24,6 +25,11 @@ void Application::Update(sf::Time dt)
     m_window.Update(dt);
     m_map.Update(dt);
     m_robotRef.Update(dt);
+
+    for (const auto& enemy : m_enemies)
+    {
+        enemy->Update(dt);
+    }
 }
 
 void Application::Render()
@@ -43,7 +49,17 @@ void Application::Init()
 {
     m_map.SetCellWithPositionAndState(m_data.GetLocations().m_source, Cell::SOURCE);
     m_map.SetCellWithPositionAndState(m_data.GetLocations().m_destination, Cell::DESTINATION);
-    m_map.SetCellWithPositionAndState(m_data.GetLocations().m_source, Cell::OCCUPY_BY_ROBOT);
+    m_map.SetCellWithPositionAndState(m_robotRef.GetLocation(), Cell::OCCUPY_BY_ROBOT);
+
+    auto enemiesParams = m_data.GetEnemiesParams();
+
+    for (auto enemyParams : enemiesParams)
+    {
+        std::unique_ptr<Enemy> enemy(new Enemy(enemyParams.translation, enemyParams.radiusAttack));
+        m_map.SetCellWithPositionAndState(enemy->GetLocation(), Cell::OCCUPY_BY_ENEMY);
+        m_enemies.push_back(std::move(enemy));
+
+    }
 }
 
 void Application::Run()

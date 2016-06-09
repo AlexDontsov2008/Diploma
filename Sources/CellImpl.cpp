@@ -59,8 +59,7 @@ CellImpl::CellImpl(const sf::Vector2f& l_windowPosition, float l_sideSize, const
 : m_rect()
 , m_mark(GetMarkByCellState(Cell::PASSABLE), l_font)
 , m_mapCoord(l_mapCoord)
-, m_currState(Cell::PASSABLE)
-, m_prevState(Cell::PASSABLE)
+, m_state(Cell::PASSABLE)
 {
     Init(l_windowPosition, l_sideSize, l_font);
 }
@@ -73,7 +72,7 @@ void CellImpl::Init(const sf::Vector2f& l_windowPosition, float l_sideSize, cons
     constexpr float outlineThickness { 3.f };
     m_rect.setSize(sf::Vector2f(l_sideSize, l_sideSize));
     m_rect.setPosition(l_windowPosition);
-    m_rect.setFillColor(GetColorByCellState(m_currState));
+    m_rect.setFillColor(GetColorByCellState(m_state));
     m_rect.setOutlineThickness(outlineThickness);
     m_rect.setOutlineColor(sf::Color::Black);
 
@@ -96,15 +95,14 @@ Object::ObjectType CellImpl::GetObjectType() const
 
 void CellImpl::SetState(Cell::CellState l_state)
 {
-    m_prevState = m_currState;
-    m_currState = l_state;
-    m_rect.setFillColor(GetColorByCellState(m_currState));
-    m_mark.setString(GetMarkByCellState(m_currState));
+    m_state = l_state;
+    m_rect.setFillColor(GetColorByCellState(m_state));
+    m_mark.setString(GetMarkByCellState(m_state));
 }
 
 Cell::CellState CellImpl::GetState() const
 {
-    return m_currState;
+    return m_state;
 }
 
 void CellImpl::draw(sf::RenderTarget& target, sf::RenderStates states) const

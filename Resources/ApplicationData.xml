@@ -2,10 +2,14 @@
 <Application windowWidth="1024" windowHeight="768" windowName="Trajectory Visualisation">
     <Map mapWidthInCells="20" mapHeighInCells="20" cellSizeInPixel="30"/>
     <Locations>
-        <Source xPos="10" yPos="2"/>
-        <Destination xPos="18" yPos="17"/>
-        <Enemies>
-            <Enemy xPos="10" yPos="10" attackRange="2"/>
-        </Enemies>
+        <Source xPos="0" yPos="0"/>
+        <Destination xPos="19" yPos="19"/>
     </Locations>
+    <Enemies>
+        <Enemy xPos="10" yPos="10" attackRange="2"/>
+        <Enemy xPos="3" yPos="15" attackRange="3"/>
+        <Enemy xPos="12" yPos="9" attackRange="2"/>
+        <Enemy xPos="5" yPos="18" attackRange="3"/>
+        <Enemy xPos="16" yPos="17" attackRange="2"/>
+    </Enemies>
 </Application>
