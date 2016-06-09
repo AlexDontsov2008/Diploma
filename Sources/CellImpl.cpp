@@ -57,7 +57,7 @@ static sf::String GetMarkByCellState(Cell::CellState state)
 
 CellImpl::CellImpl(const sf::Vector2f& l_windowPosition, float l_sideSize, const sf::Vector2u& l_mapCoord, const sf::Font& l_font)
 : m_rect()
-, m_mark(GetMarkByCellState(m_state), l_font)
+, m_mark(GetMarkByCellState(Cell::PASSABLE), l_font)
 , m_mapCoord(l_mapCoord)
 , m_state(Cell::PASSABLE)
 {

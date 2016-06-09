@@ -3,10 +3,12 @@
 #include <SFML/Graphics/RenderStates.hpp>
 
 #include "DiscreteMap.hpp"
+#include "Robot.hpp"
+#include "Application.hpp"
 
 DiscreteMap::DiscreteMap(const sf::Vector2u& l_mapSize, float l_cellSideSize, const sf::Font& l_font)
-: m_mapWidth(l_mapSize.x)
-, m_mapHeight(l_mapSize.y)
+: m_mapSize(l_mapSize)
+, m_robotRef(Robot::Instance())
 {
     Init(l_cellSideSize, l_font);
 }
@@ -18,11 +20,12 @@ DiscreteMap::~DiscreteMap()
 
 void DiscreteMap::Init(float l_cellSideSize, const sf::Font& l_font)
 {
+    // Добавить l_mapStartPosition в xml
     const auto l_mapStartPosition = sf::Vector2f(100.f, 100.f);
-    for (size_t i = 0; i < m_mapHeight; ++i)
+    for (size_t i = 0; i < m_mapSize.y; ++i)
     {
         std::vector<std::shared_ptr<Cell>> l_rowMatrix;
-        for (size_t j = 0; j < m_mapWidth; ++j)
+        for (size_t j = 0; j < m_mapSize.x; ++j)
         {
             auto l_cellPosition = l_mapStartPosition;
             l_cellPosition.x += l_cellSideSize * j;
@@ -38,7 +41,15 @@ void DiscreteMap::Init(float l_cellSideSize, const sf::Font& l_font)
 
 void DiscreteMap::Update(sf::Time dt)
 {
+    ClearMap();
+    UpdateSourceAndDestinationOnMap();
+    UpdateRobotLocationOnMap();
+    UpdateEnemiesLocationOnMap();
+}
 
+void DiscreteMap::UpdateRobotLocationOnMap()
+{
+    m_robotRef.UpdateLocationOnMap(this);
 }
 
 Object::ObjectType DiscreteMap::GetObjectType() const
@@ -49,8 +60,7 @@ Object::ObjectType DiscreteMap::GetObjectType() const
 void DiscreteMap::SetCellWithPositionAndState(const sf::Vector2u& l_position, Cell::CellState l_state)
 {
     // Check for boundaries
-    if (l_position.x < 0 || l_position.x > m_mapWidth ||
-        l_position.y < 0 || l_position.y > m_mapHeight)
+    if (!IsPointExistOnMap(l_position))
     {
         throw std::logic_error("Cell position is beyond the borders of the map");
     }
@@ -86,9 +96,44 @@ void DiscreteMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
 }
 
 
+bool DiscreteMap::IsPointExistOnMap(const sf::Vector2u& l_point) const
+{
+    return l_point.x >= 0 && l_point.x < m_mapSize.x && l_point.y >= 0 && l_point.y < m_mapSize.y;
+}
 
+// Set all Cells into PASSABLE state
+void DiscreteMap::ClearMap()
+{
+    for (const auto& l_rowOfCells : m_cells)
+    {
+        for (const auto& cell : l_rowOfCells)
+        {
+            cell->SetState(Cell::PASSABLE);
+        }
+    }
+}
 
+void DiscreteMap::UpdateSourceAndDestinationOnMap()
+{
+    auto locations = Application::Instance().GetApplicationData().GetLocations();
 
+    // 1. Update Source
+    auto source = locations.m_source;
+    m_cells[source.x][source.y]->SetState(Cell::SOURCE);
+
+    // 2. Update Destination
+    auto destination = locations.m_destination;
+    m_cells[destination.x][destination.y]->SetState(Cell::DESTINATION);
+}
+
+void DiscreteMap::UpdateEnemiesLocationOnMap()
+{
+    const std::vector<std::unique_ptr<Enemy>>& enemies = Application::Instance().GetEnemies();
+    for (const auto& enemy : enemies)
+    {
+        enemy->UpdateLocationOnMap(this);
+    }
+}
 
 
 
