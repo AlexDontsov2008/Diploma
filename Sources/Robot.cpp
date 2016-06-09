@@ -7,7 +7,7 @@ Robot::Robot()
 {
     // ЗАМЕНИТЬ на траекторию
     m_trajectory.push_back(sf::Vector2u(5, 0));
-    TrajectoryStepIteration();
+    UpdateLocationByNextStepOfTrajectory();
 }
 
 Robot::~Robot()
@@ -15,19 +15,19 @@ Robot::~Robot()
 
 }
 
-void Robot::TrajectoryStepIteration()
+void Robot::UpdateLocationByNextStepOfTrajectory()
 {
-    m_location.location = m_trajectory[m_trajectoryStep++ % m_trajectory.size()];
+    m_location = m_trajectory[m_trajectoryStep++ % m_trajectory.size()];
 }
 
 void Robot::UpdateLocationOnMap(DiscreteMap* l_map) const
 {
-    l_map->SetCellWithPositionAndState(m_location.location, Cell::OCCUPY_BY_ROBOT);
+    l_map->SetCellWithPositionAndState(m_location, Cell::OCCUPY_BY_ROBOT);
 }
 
 void Robot::Update(sf::Time dt)
 {
-    TrajectoryStepIteration();
+    UpdateLocationByNextStepOfTrajectory();
 }
 
 Object::ObjectType Robot::GetObjectType() const

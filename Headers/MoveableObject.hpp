@@ -9,14 +9,7 @@ class DiscreteMap;
 class MoveableObject : public Object
 {
     public:
-        struct Location
-        {
-            Location(const sf::Vector2u& l_location)
-            : location(l_location)
-            {}
-
-            sf::Vector2u location;
-        };
+        using Location = sf::Vector2u;
 
     public:
         MoveableObject();
@@ -30,16 +23,18 @@ class MoveableObject : public Object
 
     protected:
         Location m_location;
+        std::vector<sf::Vector2u> m_trajectory;
+        size_t m_trajectoryStep;
 };
 
 inline sf::Vector2u MoveableObject::GetLocation() const
 {
-    return m_location.location;
+    return m_location;
 }
 
 inline void MoveableObject::SetLocation(const sf::Vector2u& l_location)
 {
-    m_location.location = l_location;
+    m_location = l_location;
 }
 
 #endif // _MOVEABLE_OBJECT_HPP_

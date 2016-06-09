@@ -69,13 +69,13 @@ struct Locations
 
 struct EnemyParams
 {
-    EnemyParams()
-    {
-        SetEnemyParams();
-    }
-
-    void SetEnemyParams(const std::vector<sf::Vector2u>& l_translation = std::vector<sf::Vector2u>{sf::Vector2u(0, 0)},
+    explicit EnemyParams(const std::vector<sf::Vector2u>& l_translation = std::vector<sf::Vector2u>{sf::Vector2u(0, 0)},
                         size_t l_radiusAttack = 0)
+    : translation(l_translation)
+    , radiusAttack(l_radiusAttack)
+    {}
+
+    void SetEnemyParams(const std::vector<sf::Vector2u>& l_translation, size_t l_radiusAttack)
     {
         translation = l_translation;
         radiusAttack = l_radiusAttack;

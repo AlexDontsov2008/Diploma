@@ -41,9 +41,8 @@ void ApplicationData::ParseParameters(const pugi::xml_document& doc)
     for (auto enemyNode = enemiesNode.child("Enemy"); enemyNode; enemyNode = enemyNode.next_sibling("Enemy"))
     {
         size_t radiusAttack = enemyNode.attribute("attackRange").as_uint();
-        // ПОПРАВИТЬ
-        EnemyParams enemyParams;
-        enemyParams.SetEnemyParams(std::vector<sf::Vector2u>{sf::Vector2u(enemyNode.attribute("xPos").as_uint(), enemyNode.attribute("yPos").as_uint())}, radiusAttack);
+        auto translation = sf::Vector2u(enemyNode.attribute("xPos").as_uint(), enemyNode.attribute("yPos").as_uint());
+        EnemyParams enemyParams(std::vector<sf::Vector2u>{translation}, radiusAttack);
         m_enemiesParams.push_back(enemyParams);
     }
 }

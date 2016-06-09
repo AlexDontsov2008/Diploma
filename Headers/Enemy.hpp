@@ -14,7 +14,7 @@ class Enemy : public MoveableObject
         virtual ObjectType GetObjectType() const override;
 
     private:
-        void TranslationStepIteration();
+        void UpdateLocationByNextStepOfTranslation();
         void UpdateAttackRangeOnMap(DiscreteMap* l_map) const;
 
     private:

@@ -20,7 +20,7 @@ class Robot : public Singleton<Robot>, public MoveableObject
         virtual ~Robot();
 
     private:
-        void TrajectoryStepIteration();
+        void UpdateLocationByNextStepOfTrajectory();
 
     private:
         std::vector<sf::Vector2u> m_trajectory;
