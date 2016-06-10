@@ -21,6 +21,7 @@ class Application : public Singleton<Application>
 
         const ApplicationData& GetApplicationData() const;
         const Enemies& GetEnemies() const;
+        const DiscreteMap& GetDiscreteMap() const;
 
     protected:
         Application();
@@ -50,6 +51,11 @@ inline const ApplicationData& Application::GetApplicationData() const
 inline const Application::Enemies& Application::GetEnemies() const
 {
     return m_enemies;
+}
+
+inline const DiscreteMap& Application::GetDiscreteMap() const
+{
+    return m_map;
 }
 
 #endif // _APPLICATION_HPP_

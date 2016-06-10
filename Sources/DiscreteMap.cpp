@@ -119,11 +119,11 @@ void DiscreteMap::UpdateSourceAndDestinationOnMap()
 
     // 1. Update Source
     auto source = locations.m_source;
-    m_cells[source.x][source.y]->SetState(Cell::SOURCE);
+    m_cells[source.y][source.x]->SetState(Cell::SOURCE);
 
     // 2. Update Destination
     auto destination = locations.m_destination;
-    m_cells[destination.x][destination.y]->SetState(Cell::DESTINATION);
+    m_cells[destination.y][destination.x]->SetState(Cell::DESTINATION);
 }
 
 void DiscreteMap::UpdateEnemiesLocationOnMap()

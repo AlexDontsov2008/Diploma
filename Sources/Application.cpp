@@ -47,12 +47,16 @@ void Application::HandleInput()
 
 void Application::Init()
 {
+    // Init the Source and Destination points
     m_map.SetCellWithPositionAndState(m_data.GetLocations().m_source, Cell::SOURCE);
     m_map.SetCellWithPositionAndState(m_data.GetLocations().m_destination, Cell::DESTINATION);
+
+    // Init the Robot location
+    m_robotRef.SetLocation(m_data.GetLocations().m_source);
     m_map.SetCellWithPositionAndState(m_robotRef.GetLocation(), Cell::OCCUPY_BY_ROBOT);
 
+    // Init Enemies locations
     auto enemiesParams = m_data.GetEnemiesParams();
-
     for (auto enemyParams : enemiesParams)
     {
         std::unique_ptr<Enemy> enemy(new Enemy(enemyParams.translation, enemyParams.radiusAttack));
