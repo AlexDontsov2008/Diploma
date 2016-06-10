@@ -79,8 +79,7 @@ static inline bool IsPositionNotEqualEndPosition(const sf::Vector2u& l_position,
             (l_position.x != l_destination.x || l_position.y - 1 != l_destination.y);
 }
 
-// Check if new position not block or  postion already set
-// Arguments: new position, trajectory, map, SIZE of map, iter
+// Check if new position not enemy or  postion already set
 static void AddNewPositionToTrajectory(const sf::Vector2i& l_position, std::vector<sf::Vector2u>& trajectory,
                                        MapCoord& l_mapModel, int iter)
 {
@@ -112,7 +111,6 @@ static void AddNewPositionToTrajectory(const sf::Vector2i& l_position, std::vect
 	}
 }
 
-// Build map
 static void BuildMap(MapCoord& l_mapModel, const sf::Vector2u& l_source, const sf::Vector2u& l_destination)
 {
 	int iter = 0;
@@ -128,7 +126,6 @@ static void BuildMap(MapCoord& l_mapModel, const sf::Vector2u& l_source, const s
 		// Process all points in trajectory
 		for (auto position : trajectory)
 		{
-			// Check if the new position != end position
 			if (IsPositionNotEqualEndPosition(position, l_destination))
 			{
 				// Check if a new position is not blocked, then add it in the newTrajectory
@@ -197,12 +194,13 @@ static void PrintMap(MapCoord& l_mapModel)
 	}
 
 	std::cout.width(1);
+	std::cout << std::endl;
 }
 
-static void PrintTrajectory(const std::list<sf::Vector2u>& trajectory)
+static void PrintTrajectory(const std::list<sf::Vector2u>& l_trajectory)
 {
 	int iter{ 0 };
-	for (auto position : trajectory)
+	for (auto position : l_trajectory)
 	{
 		std::cout << "-> [" << position.x << ", " << position.y << "]";
 		iter += 1;
@@ -210,7 +208,13 @@ static void PrintTrajectory(const std::list<sf::Vector2u>& trajectory)
 		if (iter % 4 == 0)
 			std::cout << '\n';
 	}
-	std::cout << '\n';
+	std::cout << std::endl;
+}
+
+static void PrintResultIntoConsole(MapCoord& l_mapModel, const std::list<sf::Vector2u>& l_trajectory)
+{
+    PrintMap(l_mapModel);
+    PrintTrajectory(l_trajectory);
 }
 
 
@@ -228,21 +232,19 @@ LeeWaveStrategy::Trajectory LeeWaveStrategy::TrajectoryFindAlgorithm()
     const ApplicationData& appData = app.GetApplicationData();
     const auto sourceLocation = Robot::Instance().GetLocation();
 
+    // 1. Create the map model
     MapCoord mapModel(discreteMap.GetMapSize());
-    PrintMap(mapModel);
+    // 2. Add enemies on the map
     AddEnemies(mapModel, Application::Instance().GetEnemies());
-    std::cout << '\n' << '\n';
-    PrintMap(mapModel);
+    // 3. Add the source and the destination
     SetSourceAndDestination(mapModel, sourceLocation, appData.GetLocations().m_destination);
-    std::cout << '\n' << '\n';
-    PrintMap(mapModel);
+    // 4. Build the map for the result trajectory
     BuildMap(mapModel, sourceLocation, appData.GetLocations().m_destination);
-    std::cout << '\n' << '\n';
-    PrintMap(mapModel);
+    // 5. Get the result trajectory
     auto trajectory = GetResultTrajectory(mapModel, sourceLocation, appData.GetLocations().m_destination);
-    std::cout << '\n' << '\n';
-    PrintTrajectory(trajectory);
-    trajectory.pop_front();
+    // 6. Print results.
+    PrintResultIntoConsole(mapModel, trajectory);
 
+    trajectory.pop_front();
     return trajectory;
 }

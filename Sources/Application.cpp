@@ -84,7 +84,7 @@ void Application::Run()
             HandleInput();
             Update(frameTime);
             // Вынести время sleep в xml
-            sf::sleep(sf::seconds(1.0f));
+            sf::sleep(sf::seconds(0.5f));
         }
         Render();
     }
