@@ -23,6 +23,11 @@ void Robot::UpdateLocationByNextStepOfTrajectory()
 
 void Robot::UpdateLocationOnMap(DiscreteMap* l_map) const
 {
+    for (const auto& trajStep : m_trajectory)
+    {
+        l_map->SetCellWithPositionAndState(trajStep, Cell::TRAJECTORY_STEP);
+    }
+
     l_map->SetCellWithPositionAndState(m_location, Cell::OCCUPY_BY_ROBOT);
 }
 

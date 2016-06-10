@@ -246,5 +246,6 @@ LeeWaveStrategy::Trajectory LeeWaveStrategy::TrajectoryFindAlgorithm()
     PrintResultIntoConsole(mapModel, trajectory);
 
     trajectory.pop_front();
+    trajectory.pop_back();
     return trajectory;
 }
