@@ -1,4 +1,6 @@
 #include <list>
+#include <math.h>
+#include <limits.h>
 
 #include "LeeWaveStrategy.hpp"
 #include "Application.hpp"
@@ -61,6 +63,12 @@ static void AddEnemies(MapCoord& l_mapModel, const std::vector<std::unique_ptr<E
     {
         auto enemyLocation = enemy->GetLocation();
         l_mapModel.SetMap()[enemyLocation.y][enemyLocation.x] = enemyMark;
+
+        const auto& attackableLocations = enemy->GetAttackableLocations();
+        for (const auto& location : attackableLocations)
+        {
+            l_mapModel.SetMap()[location.y][location.x] = enemyMark;
+        }
     }
 }
 
@@ -135,7 +143,7 @@ static void BuildMap(MapCoord& l_mapModel, const sf::Vector2u& l_source, const s
 			{
 				l_mapModel.SetMap()[l_destination.y][l_destination.x] = iter + 1;
 				isEndOfSearch = true;
-				break;
+				return;
 			}
 		}// End of process trajectory
 
@@ -145,17 +153,57 @@ static void BuildMap(MapCoord& l_mapModel, const sf::Vector2u& l_source, const s
 			iter += 1;
 			trajectory = std::move(newTrajectory);
 		}
-		else
-		{
-			break;
-		}
 	}
+}
+
+static sf::Vector2i GetOptimalStepOfTrajectory(const std::vector<sf::Vector2u>& l_steps)
+{
+    const Application& app = Application::Instance();
+    const auto& enemies = app.GetEnemies();
+    if (l_steps.size() > 0)
+    {
+        int smallestDistances[l_steps.size()] = {INT_MAX};
+
+        for (const auto& step : l_steps)
+        {
+            int i = 0;
+            for (const auto& enemy : enemies)
+            {
+                auto enemyLocation = enemy->GetLocation();
+                int distance = std::sqrt((enemyLocation.x - step.x) * (enemyLocation.x - step.x) +
+                                         (enemyLocation.y - step.y) * (enemyLocation.y - step.y));
+
+                if (distance < smallestDistances[i])
+                {
+                    smallestDistances[i] = distance;
+                }
+            }
+
+            i += 1;
+        }
+
+        int stepNumber = 0;
+        int maxDistance = smallestDistances[stepNumber];
+        for (int i = 1; i < l_steps.size(); ++i)
+        {
+            if (maxDistance < smallestDistances[i])
+            {
+                maxDistance = smallestDistances[i];
+                stepNumber = i;
+            }
+        }
+
+        return sf::Vector2i(l_steps[stepNumber].x, l_steps[stepNumber].y);
+    }
+
+    return sf::Vector2i(-1, -1);
 }
 
 static std::list<sf::Vector2u> GetResultTrajectory(MapCoord& l_mapModel, const sf::Vector2u& l_source, const sf::Vector2u& l_destination)
 {
 	std::list<sf::Vector2u> resultTrajectory{ 1, l_destination };
 	const auto mapSize = l_mapModel.GetMapSize();
+	std::vector<sf::Vector2u> considerStepsOfTrajectory;
 
 
 	while (resultTrajectory.front() != l_source)
@@ -163,17 +211,24 @@ static std::list<sf::Vector2u> GetResultTrajectory(MapCoord& l_mapModel, const s
 		sf::Vector2i position = static_cast<sf::Vector2i>(resultTrajectory.front());
 		int value = l_mapModel.SetMap()[position.y][position.x];
 
-		if (position.x - 1 >= 0 && l_mapModel.SetMap()[position.y][position.x - 1] == value - 1)
-			resultTrajectory.push_front(sf::Vector2u(position.x - 1, position.y));
+        if (position.x - 1 >= 0 && l_mapModel.SetMap()[position.y][position.x - 1] == value - 1)
+			considerStepsOfTrajectory.push_back(sf::Vector2u(position.x - 1, position.y));
 
-		else if (position.x + 1 < mapSize.x && l_mapModel.SetMap()[position.y][position.x + 1] == value - 1)
-			resultTrajectory.push_front(sf::Vector2u(position.x + 1, position.y));
+		if (position.x + 1 < mapSize.x && l_mapModel.SetMap()[position.y][position.x + 1] == value - 1)
+			considerStepsOfTrajectory.push_back(sf::Vector2u(position.x + 1, position.y));
 
-		else if (position.y - 1 >= 0 && l_mapModel.SetMap()[position.y - 1][position.x] == value - 1)
-			resultTrajectory.push_front(sf::Vector2u(position.x, position.y - 1));
+		if (position.y - 1 >= 0 && l_mapModel.SetMap()[position.y - 1][position.x] == value - 1)
+			considerStepsOfTrajectory.push_back(sf::Vector2u(position.x, position.y - 1));
 
-		else if (position.y + 1 < mapSize.y && l_mapModel.SetMap()[position.y + 1][position.x] == value - 1)
-			resultTrajectory.push_front(sf::Vector2u(position.x, position.y + 1));
+		if (position.y + 1 < mapSize.y && l_mapModel.SetMap()[position.y + 1][position.x] == value - 1)
+			considerStepsOfTrajectory.push_back(sf::Vector2u(position.x, position.y + 1));
+
+        auto optimalStep = GetOptimalStepOfTrajectory(considerStepsOfTrajectory);
+        if (optimalStep.x != -1)
+        {
+            resultTrajectory.push_front(sf::Vector2u(optimalStep.x, optimalStep.y));
+        }
+        considerStepsOfTrajectory.clear();
 	}
 
 	return resultTrajectory;
@@ -236,10 +291,13 @@ LeeWaveStrategy::Trajectory LeeWaveStrategy::TrajectoryFindAlgorithm()
     MapCoord mapModel(discreteMap.GetMapSize());
     // 2. Add enemies on the map
     AddEnemies(mapModel, Application::Instance().GetEnemies());
+    PrintMap(mapModel);
     // 3. Add the source and the destination
     SetSourceAndDestination(mapModel, sourceLocation, appData.GetLocations().m_destination);
+    PrintMap(mapModel);
     // 4. Build the map for the result trajectory
     BuildMap(mapModel, sourceLocation, appData.GetLocations().m_destination);
+    PrintMap(mapModel);
     // 5. Get the result trajectory
     auto trajectory = GetResultTrajectory(mapModel, sourceLocation, appData.GetLocations().m_destination);
     // 6. Print results.

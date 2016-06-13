@@ -7,6 +7,7 @@
 
 #include "pugixml.hpp"
 #include "Uncopyable.hpp"
+#include "Singleton.hpp"
 
 struct ApplicationSettings
 {
@@ -37,11 +38,11 @@ struct MapSettings
     void SetMapSettings(size_t l_mapWidth = 0, size_t l_mapHeight = 0, size_t l_cellSize = 0)
     {
         m_mapWidth = l_mapWidth;
-        m_mapHeigh = l_mapHeight;
+        m_mapHeight = l_mapHeight;
         m_cellSize = l_cellSize;
     }
 
-    size_t m_mapHeigh;
+    size_t m_mapHeight;
     size_t m_mapWidth;
     size_t m_cellSize;
 };
@@ -86,10 +87,12 @@ struct EnemyParams
 };
 
 
-class ApplicationData : private Uncopyable
+class ApplicationData : public Singleton<ApplicationData>
 {
     public:
-        ApplicationData(const std::string& l_pathToTheFile);
+        friend Singleton<ApplicationData>;
+
+        ApplicationData();
 
         const ApplicationSettings& GetApplicationSettins() const
         {

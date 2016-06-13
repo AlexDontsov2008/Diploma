@@ -1,15 +1,64 @@
 <?xml version="1.0"?>
 <Application windowWidth="1024" windowHeight="768" windowName="Trajectory Visualisation">
-    <Map mapWidthInCells="20" mapHeighInCells="18" cellSizeInPixel="30"/>
+    <Map mapWidthInCells="20" mapHeighInCells="20" cellSizeInPixel="30"/>
     <Locations>
         <Source xPos="0" yPos="0"/>
         <Destination xPos="19" yPos="17"/>
     </Locations>
     <Enemies>
-        <Enemy xPos="10" yPos="10" attackRange="2"/>
-        <Enemy xPos="3" yPos="15" attackRange="3"/>
-        <Enemy xPos="12" yPos="9" attackRange="2"/>
-        <Enemy xPos="5" yPos="12" attackRange="3"/>
-        <Enemy xPos="16" yPos="17" attackRange="2"/>
+        <Enemy attackRange="0">
+            <Translation xPos="10" yPos="10"/>
+            <Translation xPos="11" yPos="10"/>
+            <Translation xPos="12" yPos="10"/>
+            <Translation xPos="11" yPos="10"/>
+        </Enemy>
+        <Enemy attackRange="0">
+            <Translation xPos="8" yPos="15"/>
+            <Translation xPos="8" yPos="14"/>
+            <Translation xPos="8" yPos="13"/>
+            <Translation xPos="8" yPos="12"/>
+            <Translation xPos="8" yPos="11"/>
+            <Translation xPos="8" yPos="12"/>
+            <Translation xPos="8" yPos="13"/>
+            <Translation xPos="8" yPos="14"/>
+        </Enemy>
+        <Enemy attackRange="0">
+            <Translation xPos="12" yPos="9"/>
+            <Translation xPos="11" yPos="8"/>
+            <Translation xPos="10" yPos="7"/>
+            <Translation xPos="11" yPos="8"/>
+        </Enemy>
+        <Enemy attackRange="0">
+            <Translation xPos="0" yPos="5"/>
+            <Translation xPos="1" yPos="5"/>
+            <Translation xPos="2" yPos="5"/>
+            <Translation xPos="3" yPos="5"/>
+            <Translation xPos="4" yPos="5"/>
+            <Translation xPos="5" yPos="5"/>
+            <Translation xPos="4" yPos="5"/>
+            <Translation xPos="3" yPos="5"/>
+            <Translation xPos="2" yPos="5"/>
+            <Translation xPos="1" yPos="5"/>
+        </Enemy>
+        <Enemy attackRange="0">
+            <Translation xPos="16" yPos="17"/>
+            <Translation xPos="15" yPos="17"/>
+            <Translation xPos="14" yPos="17"/>
+            <Translation xPos="13" yPos="17"/>
+            <Translation xPos="14" yPos="17"/>
+            <Translation xPos="15" yPos="17"/>
+        </Enemy>
+        <Enemy attackRange="0">
+            <Translation xPos="0" yPos="10"/>
+            <Translation xPos="0" yPos="11"/>
+            <Translation xPos="0" yPos="12"/>
+            <Translation xPos="0" yPos="13"/>
+            <Translation xPos="0" yPos="14"/>
+            <Translation xPos="0" yPos="15"/>
+            <Translation xPos="0" yPos="14"/>
+            <Translation xPos="0" yPos="13"/>
+            <Translation xPos="0" yPos="12"/>
+            <Translation xPos="0" yPos="11"/>
+        </Enemy>
     </Enemies>
 </Application>

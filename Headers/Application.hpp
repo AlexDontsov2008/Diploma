@@ -35,7 +35,7 @@ class Application : public Singleton<Application>
         void HandleInput();
 
     private:
-        ApplicationData m_data;
+        ApplicationData& m_dataRef;
         FontStorage m_fontStorage;
         Window  m_window;
         DiscreteMap m_map;
@@ -45,7 +45,7 @@ class Application : public Singleton<Application>
 
 inline const ApplicationData& Application::GetApplicationData() const
 {
-    return m_data;
+    return m_dataRef;
 }
 
 inline const Application::Enemies& Application::GetEnemies() const

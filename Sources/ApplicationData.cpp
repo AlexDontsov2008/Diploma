@@ -1,12 +1,14 @@
 #include "ApplicationData.hpp"
 
-ApplicationData::ApplicationData(const std::string& l_pathToTheFile)
+static constexpr char PathToTheAppData[] = "Resources/ApplicationData.xml";
+
+ApplicationData::ApplicationData()
 {
     pugi::xml_document doc;
-    if (!doc.load_file(l_pathToTheFile.c_str()))
+    if (!doc.load_file(PathToTheAppData))
     {
         char buffer[64];
-        sprintf(buffer, "Failed to load %s file", l_pathToTheFile.c_str());
+        sprintf(buffer, "Failed to load %s file", PathToTheAppData);
         throw std::logic_error(buffer);
     }
 
@@ -41,7 +43,13 @@ void ApplicationData::ParseParameters(const pugi::xml_document& doc)
     for (auto enemyNode = enemiesNode.child("Enemy"); enemyNode; enemyNode = enemyNode.next_sibling("Enemy"))
     {
         size_t radiusAttack = enemyNode.attribute("attackRange").as_uint();
-        auto translation = sf::Vector2u(enemyNode.attribute("xPos").as_uint(), enemyNode.attribute("yPos").as_uint());
+        std::vector<sf::Vector2u> translation;
+        for (auto translationNode = enemyNode.child("Translation"); translationNode; translationNode = translationNode.next_sibling("Translation"))
+        {
+            auto step = sf::Vector2u(translationNode.attribute("xPos").as_uint(), translationNode.attribute("yPos").as_uint());
+            translation.push_back(step);
+        }
+
         EnemyParams enemyParams(std::vector<sf::Vector2u>{translation}, radiusAttack);
         m_enemiesParams.push_back(enemyParams);
     }
